@@ -40,6 +40,16 @@ public class PlantDairyController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    /**
+     * Retyrns a list of specimen object, given the id provided
+     *
+     * Returns one of the following codes:
+     * 200: Successfully returned a given specimen
+     * 404: Unable to find the specimen since it is not found
+     * @param id
+     * @return Existing Specimen object
+     */
+
     @GetMapping("/specimen/id/")
     public ResponseEntity fetchSpecimenById(@PathVariable("id") String id)
     {
