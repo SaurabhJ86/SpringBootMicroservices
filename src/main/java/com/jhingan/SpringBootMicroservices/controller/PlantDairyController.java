@@ -1,11 +1,15 @@
 package com.jhingan.SpringBootMicroservices.controller;
 
 import com.jhingan.SpringBootMicroservices.dto.Specimen;
+import com.jhingan.SpringBootMicroservices.service.ISpecimenService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * The controller for Plant Diary REST Endpoints
@@ -18,6 +22,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class PlantDairyController {
+
+    @Autowired
+    ISpecimenService specimenService;
 
     @RequestMapping("/")
     public String index()
@@ -35,9 +42,11 @@ public class PlantDairyController {
     }
 
     @GetMapping("/specimen")
-    public ResponseEntity fetchAllSpecimen()
+    @ResponseBody
+    public List<Specimen> fetchAllSpecimen()
     {
-        return new ResponseEntity(HttpStatus.OK);
+        List<Specimen> specimens = specimenService.fetchAll();
+        return specimens;
     }
 
     /**
@@ -69,7 +78,8 @@ public class PlantDairyController {
     @PostMapping(value = "/specimen", consumes = "application/json", produces = "application/json")
     public Specimen createSpecimen(@RequestBody Specimen specimen)
     {
-        return specimen;
+        Specimen newSpecimen = specimenService.save(specimen);
+        return newSpecimen;
     }
 
     @DeleteMapping("/specimen/id")
