@@ -8,4 +8,8 @@ public interface ISpecimenDAO {
     Specimen save(Specimen specimen);
 
     List<Specimen> fetchAll();
+
+    Specimen fetch(int id);
+
+    void delete(int id);
 }

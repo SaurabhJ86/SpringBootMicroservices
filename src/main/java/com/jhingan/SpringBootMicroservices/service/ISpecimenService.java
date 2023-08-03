@@ -12,7 +12,9 @@ public interface ISpecimenService {
      */
     Specimen fetchById(int id);
 
-    Specimen save(Specimen specimen);
+    Specimen save(Specimen specimen) throws Exception;
 
     List<Specimen> fetchAll();
+
+    void delete(int id) throws Exception;
 }

@@ -40,7 +40,14 @@ public class PlantDairyController {
         ResponseEntity responseEntity = new ResponseEntity("Your number: " + id, httpHeaders, HttpStatus.FORBIDDEN);
         return responseEntity;
     }
-
+    /**
+     * Returns a list of specimen object
+     *
+     * Returns one of the following codes:
+     * 200: Successfully returned a given list of specimens
+     * 404: Unable to find the specimen since it is not found
+     * @return Existing Specimen object(s).
+     */
     @GetMapping("/specimen")
     @ResponseBody
     public List<Specimen> fetchAllSpecimen()
@@ -49,20 +56,26 @@ public class PlantDairyController {
         return specimens;
     }
 
+
+
     /**
-     * Retyrns a list of specimen object, given the id provided
+     * Return a specimen object, given the id provided
      *
      * Returns one of the following codes:
-     * 200: Successfully returned a given specimen
-     * 404: Unable to find the specimen since it is not found
+     * 200: Successfully retrieves a Specimen object
+     * 400: Specimen with given ID doesn't exist
+     *
      * @param id
-     * @return Existing Specimen object
+     * @return Specimen object if found
      */
-
-    @GetMapping("/specimen/id/")
+    @GetMapping("/specimen/{id}/")
     public ResponseEntity fetchSpecimenById(@PathVariable("id") String id)
     {
-        return new ResponseEntity(HttpStatus.OK);
+        Specimen foundSpecimen = specimenService.fetchById(Integer.parseInt(id));
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        httpHeaders.add("Owner", "Saurabh Jhingan");
+        return new ResponseEntity(foundSpecimen, httpHeaders, HttpStatus.OK);
     }
 
     /**
@@ -78,13 +91,33 @@ public class PlantDairyController {
     @PostMapping(value = "/specimen", consumes = "application/json", produces = "application/json")
     public Specimen createSpecimen(@RequestBody Specimen specimen)
     {
-        Specimen newSpecimen = specimenService.save(specimen);
+        Specimen newSpecimen = null;
+        try {
+            newSpecimen = specimenService.save(specimen);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return newSpecimen;
     }
 
+    /**
+     * Delete a specimen object, based on the param id
+     *
+     * Returns one of the following codes:
+     * 200: Successfully delete the specimen object
+     * 500: Specimen object with given id doesn't exist
+     * @param id
+     * @return void
+     */
     @DeleteMapping("/specimen/id")
     public ResponseEntity deleteSpecimen(@PathVariable("id") String id)
     {
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        try {
+            specimenService.delete(Integer.parseInt(id));
+            return new ResponseEntity(HttpStatus.OK);
+        } catch (Exception e) {
+//            TODO add logging!
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

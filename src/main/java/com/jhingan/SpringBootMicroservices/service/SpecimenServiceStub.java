@@ -22,11 +22,13 @@ public class SpecimenServiceStub implements ISpecimenService{
         this.specimenDAO = specimenDAO;
     }
     @Override
-    public Specimen fetchById(int i) {
-        Specimen specimen = new Specimen();
-        specimen.setDescription("Eastern RedBud");
-        specimen.setSpecimenId("83");
+    public Specimen fetchById(int id) {
+        Specimen specimen = specimenDAO.fetch(id);
         return specimen;
+//        Specimen specimen = new Specimen();
+//        specimen.setDescription("Eastern RedBud");
+//        specimen.setSpecimenId("83");
+//        return specimen;
     }
 
     @Override
@@ -37,5 +39,10 @@ public class SpecimenServiceStub implements ISpecimenService{
     @Override
     public List<Specimen> fetchAll() {
         return specimenDAO.fetchAll();
+    }
+
+    @Override
+    public void delete(int id) throws Exception{
+        specimenDAO.delete(id);
     }
 }

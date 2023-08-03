@@ -60,7 +60,12 @@ class SpringBootMicroservicesApplicationTests {
 	}
 
 	private void thenCreateNewSpecimenAndReturnIt() {
-		Specimen createdSpecimen = specimenService.save(specimen);
+		Specimen createdSpecimen = null;
+		try {
+			createdSpecimen = specimenService.save(specimen);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 		assertEquals(specimen, createdSpecimen);
 	}
 
