@@ -41,7 +41,7 @@ public class PlantDairyController {
     }
 
     /**
-     * Retyrns a list of specimen object, given the id provided
+     * Returns a specimen object, given the id provided
      *
      * Returns one of the following codes:
      * 200: Successfully returned a given specimen
@@ -50,14 +50,15 @@ public class PlantDairyController {
      * @return Existing Specimen object
      */
 
-    @GetMapping("/specimen/id/")
+    @GetMapping("/specimen/{id}/")
     public ResponseEntity fetchSpecimenById(@PathVariable("id") String id)
     {
+
         return new ResponseEntity(HttpStatus.OK);
     }
 
     /**
-     * Create a new specimen object, given the data provided.
+     * Creates a new specimen object, given the data provided.
      *
      * Returns one of the following codes:
      * 201: Successfully created a new specimen.
@@ -72,7 +73,16 @@ public class PlantDairyController {
         return specimen;
     }
 
-    @DeleteMapping("/specimen/id")
+    /**
+     * Deletes an existing specimen object
+     *
+     * Returns one of the following codes:
+     * 200: Ok
+     * 500: Internal Server Error
+     * @param id
+     * @return
+     */
+    @DeleteMapping("/specimen/{id}")
     public ResponseEntity deleteSpecimen(@PathVariable("id") String id)
     {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
