@@ -1,11 +1,15 @@
 package com.jhingan.SpringBootMicroservices.controller;
 
 import com.jhingan.SpringBootMicroservices.dto.Specimen;
+import com.jhingan.SpringBootMicroservices.service.ISpecimenService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * The controller for Plant Diary REST Endpoints
@@ -18,6 +22,9 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class PlantDairyController {
+
+    @Autowired
+    ISpecimenService specimenService;
 
     @RequestMapping("/")
     public String index()
@@ -34,10 +41,20 @@ public class PlantDairyController {
         return responseEntity;
     }
 
+    /**
+     * Returns a list of all specimen objects
+     *
+     * Returns one of the following codes:
+     * 200: Ok
+     * 404:
+     * @return List of specimen objects.
+     */
     @GetMapping("/specimen")
-    public ResponseEntity fetchAllSpecimen()
+    @ResponseBody
+    public List<Specimen> fetchAllSpecimen()
     {
-        return new ResponseEntity(HttpStatus.OK);
+        List<Specimen> specimens = specimenService.fetchAll();
+        return specimens;
     }
 
     /**
@@ -53,8 +70,10 @@ public class PlantDairyController {
     @GetMapping("/specimen/{id}/")
     public ResponseEntity fetchSpecimenById(@PathVariable("id") String id)
     {
-
-        return new ResponseEntity(HttpStatus.OK);
+        Specimen foundSpecimen = specimenService.fetchById(Integer.parseInt(id));
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        return new ResponseEntity(foundSpecimen, httpHeaders, HttpStatus.OK);
     }
 
     /**
@@ -70,7 +89,13 @@ public class PlantDairyController {
     @PostMapping(value = "/specimen", consumes = "application/json", produces = "application/json")
     public Specimen createSpecimen(@RequestBody Specimen specimen)
     {
-        return specimen;
+        Specimen savedSpecimen = null;
+        try {
+            savedSpecimen = specimenService.save(specimen);
+        } catch (Exception e) {
+//            TODO Add Logging Later
+        }
+        return savedSpecimen;
     }
 
     /**
@@ -82,9 +107,16 @@ public class PlantDairyController {
      * @param id
      * @return
      */
-    @DeleteMapping("/specimen/{id}")
+    @DeleteMapping("/specimen/{id}/")
     public ResponseEntity deleteSpecimen(@PathVariable("id") String id)
     {
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        Integer idToDelete = Integer.parseInt(id);
+        try {
+            specimenService.deleteById(idToDelete);
+            return new ResponseEntity(HttpStatus.OK);
+        } catch (Exception e) {
+//            TODO add logging
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
