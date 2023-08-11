@@ -32,8 +32,16 @@ class SpringBootMicroservicesApplicationTests {
 	@Test
 	void fetchSpecimenByID_returnsRedbudForID83() throws Exception {
 		givenSpecimenDataIsAvailable();
+		whenSpecimen83AddedIsRedBud();
 		whenUserSearchesSpecimenWithID83();
 		thenReturnOneEasternRedbudSpecimenForID83();
+	}
+
+	private void whenSpecimen83AddedIsRedBud() {
+		Specimen redbud = new Specimen();
+		redbud.setSpecimenId("83");
+		redbud.setDescription("Eastern Redbud");
+		Mockito.when(specimenDAO.fetch(83)).thenReturn(redbud);
 	}
 
 	private void givenSpecimenDataIsAvailable() throws Exception {
