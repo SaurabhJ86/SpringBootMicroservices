@@ -7,6 +7,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,15 +22,22 @@ import java.util.List;
  * @version 1.0.0-SNAPSHOT
  */
 
-@RestController
+@Controller
 public class PlantDairyController {
 
     @Autowired
     ISpecimenService specimenService;
 
     @RequestMapping("/")
-    public String index()
+    public String index(Model model)
     {
+        Specimen specimen = new Specimen();
+        specimen.setDescription("Fuji Apple");
+        specimen.setLatitude("39.74");
+        specimen.setLongitude("-84.71");
+        specimen.setSpecimenId("1004");
+        specimen.setPlantId(88);
+        model.addAttribute("specimen",specimen);
         return "start";
     }
 
