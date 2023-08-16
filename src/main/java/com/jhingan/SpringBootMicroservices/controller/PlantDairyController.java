@@ -41,7 +41,20 @@ public class PlantDairyController {
         return "start";
     }
 
+    @RequestMapping("/saveSpecimen")
+    public String saveSpecimen(Specimen specimen)
+    {
+        try {
+            specimenService.save(specimen);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "start";
+        }
+        return "start";
+    }
+
     @RequestMapping("/lookup/{id}")
+    @ResponseBody
     public ResponseEntity index(@PathVariable("id") String id)
     {
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -77,6 +90,7 @@ public class PlantDairyController {
      */
 
     @GetMapping("/specimen/{id}/")
+    @ResponseBody
     public ResponseEntity fetchSpecimenById(@PathVariable("id") String id)
     {
         Specimen foundSpecimen = specimenService.fetchById(Integer.parseInt(id));
@@ -96,6 +110,7 @@ public class PlantDairyController {
      * @return Newly created Specimen Object.
      */
     @PostMapping(value = "/specimen", consumes = "application/json", produces = "application/json")
+    @ResponseBody
     public Specimen createSpecimen(@RequestBody Specimen specimen)
     {
         Specimen savedSpecimen = null;

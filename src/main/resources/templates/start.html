@@ -7,5 +7,14 @@
 <body>
     Lets find plants here.
     <p th:text="${specimen}"></p>
+
+    <form action="#" th:action="@{/saveSpecimen}" th:object="${specimen}" method="GET"><br/>
+        <label>Latitude</label><input type="text" name="latitude" th:field="*{latitude}"><br/>
+        <label>Longitude</label><input type="text" name="longitude" th:field="*{longitude}"><br/>
+        <label>Description</label><input type="text" name="description" th:field="*{description}"><br/>
+        <label>Plant</label><input type="text" name="plant" th:field="*{plantId}"><br/>
+        <label>Specimen</label><input type="text" name="specimen" th:field="*{specimenId}"><br/>
+        <button name="submit" type="submit" value="0">Submit</button><br/>
+    </form>
 </body>
 </html>
