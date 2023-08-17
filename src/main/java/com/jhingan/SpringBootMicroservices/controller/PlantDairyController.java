@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * The controller for Plant Diary REST Endpoints
@@ -142,5 +143,20 @@ public class PlantDairyController {
 //            TODO add logging
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+//    @GetMapping("/plants")
+//    public ResponseEntity searchPlants(@RequestParam(value="searchTerm",required = false, defaultValue = "None") String searchTerm)
+//    {
+//        String newSearchTerm = searchTerm + " Hello there";
+//        System.out.println(newSearchTerm);
+//        return new ResponseEntity(HttpStatus.OK);
+//    }
+    @GetMapping("/plants")
+    public ResponseEntity searchPlants(@RequestParam Map<String, String> requestParams)
+    {
+        int params = requestParams.size();
+        String searchValue = requestParams.get("searchTerm");
+        return new ResponseEntity(HttpStatus.OK);
     }
 }
