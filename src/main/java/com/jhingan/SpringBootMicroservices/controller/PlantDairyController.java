@@ -29,6 +29,11 @@ public class PlantDairyController {
     @Autowired
     ISpecimenService specimenService;
 
+    /**
+     * Handle the root("/") page
+     * @param None
+     * @return
+     */
     @RequestMapping("/")
     public String index(Model model)
     {
@@ -40,6 +45,17 @@ public class PlantDairyController {
         specimen.setPlantId(88);
         model.addAttribute("specimen",specimen);
         return "start";
+    }
+
+    /**
+     * Handles the /sustainability page
+     * @param model
+     * @return
+     */
+    @RequestMapping("/sustainability")
+    public String sustainability(Model model)
+    {
+        return "sustainability";
     }
 
     @RequestMapping("/saveSpecimen")
