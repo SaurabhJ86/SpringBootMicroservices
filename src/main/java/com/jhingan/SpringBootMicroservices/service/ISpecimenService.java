@@ -1,7 +1,9 @@
 package com.jhingan.SpringBootMicroservices.service;
 
+import com.jhingan.SpringBootMicroservices.dto.Plant;
 import com.jhingan.SpringBootMicroservices.dto.Specimen;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface ISpecimenService {
@@ -18,4 +20,6 @@ public interface ISpecimenService {
     Specimen save(Specimen specimen) throws Exception;
 
     List<Specimen> fetchAll();
+
+    List<Plant> fetchPlants(String combinedName) throws IOException;
 }

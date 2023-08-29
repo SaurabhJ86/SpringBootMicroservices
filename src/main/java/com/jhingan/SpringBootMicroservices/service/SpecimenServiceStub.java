@@ -1,10 +1,13 @@
 package com.jhingan.SpringBootMicroservices.service;
 
+import com.jhingan.SpringBootMicroservices.dao.IPlantDAO;
 import com.jhingan.SpringBootMicroservices.dao.ISpecimenDAO;
+import com.jhingan.SpringBootMicroservices.dto.Plant;
 import com.jhingan.SpringBootMicroservices.dto.Specimen;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -12,6 +15,8 @@ public class SpecimenServiceStub implements ISpecimenService{
 
     @Autowired
     private ISpecimenDAO specimenDAO;
+    @Autowired
+    private IPlantDAO plantDAO;
 
     public SpecimenServiceStub(){};
 
@@ -39,5 +44,10 @@ public class SpecimenServiceStub implements ISpecimenService{
     @Override
     public List<Specimen> fetchAll() {
         return this.specimenDAO.fetchAll();
+    }
+
+    @Override
+    public List<Plant> fetchPlants(String combinedName) throws IOException {
+        return plantDAO.fetchPlants(combinedName);
     }
 }

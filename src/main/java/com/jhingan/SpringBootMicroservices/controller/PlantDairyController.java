@@ -1,5 +1,6 @@
 package com.jhingan.SpringBootMicroservices.controller;
 
+import com.jhingan.SpringBootMicroservices.dto.Plant;
 import com.jhingan.SpringBootMicroservices.dto.Specimen;
 import com.jhingan.SpringBootMicroservices.service.ISpecimenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -169,10 +171,11 @@ public class PlantDairyController {
 //        return new ResponseEntity(HttpStatus.OK);
 //    }
     @GetMapping("/plants")
-    public ResponseEntity searchPlants(@RequestParam Map<String, String> requestParams)
-    {
-        int params = requestParams.size();
+    public ResponseEntity searchPlants(@RequestParam Map<String, String> requestParams) throws IOException {
         String searchValue = requestParams.get("searchTerm");
-        return new ResponseEntity(HttpStatus.OK);
+        List<Plant> allPlants = specimenService.fetchPlants(searchValue);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+        return new ResponseEntity(allPlants,httpHeaders,HttpStatus.OK);
     }
 }
