@@ -163,19 +163,25 @@ public class PlantDairyController {
         }
     }
 
-//    @GetMapping("/plants")
-//    public ResponseEntity searchPlants(@RequestParam(value="searchTerm",required = false, defaultValue = "None") String searchTerm)
-//    {
-//        String newSearchTerm = searchTerm + " Hello there";
-//        System.out.println(newSearchTerm);
-//        return new ResponseEntity(HttpStatus.OK);
-//    }
-    @GetMapping("/plants")
+    @GetMapping(value = "/plants", consumes = "application/json", produces = "application/json")
     public ResponseEntity searchPlants(@RequestParam Map<String, String> requestParams) throws IOException {
         String searchValue = requestParams.get("searchTerm");
         List<Plant> allPlants = specimenService.fetchPlants(searchValue);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         return new ResponseEntity(allPlants,httpHeaders,HttpStatus.OK);
+    }
+
+    @GetMapping("/plants")
+    public String searchPlantsForm(@RequestParam(value = "searchTerm", required = false, defaultValue = "None") String searchTerm, Model model)
+    {
+        try {
+            List<Plant> allPlants = specimenService.fetchPlants(searchTerm);
+            model.addAttribute("plants", allPlants);
+            return "plants";
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "error";
+        }
     }
 }
