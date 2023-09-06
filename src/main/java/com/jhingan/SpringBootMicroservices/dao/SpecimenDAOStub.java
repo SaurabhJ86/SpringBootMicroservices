@@ -14,7 +14,8 @@ public class SpecimenDAOStub implements ISpecimenDAO{
     Map<Integer, Specimen> specimens = new HashMap<>();
     @Override
     public Specimen save(Specimen specimen) throws Exception {
-        Integer specimenId = Integer.parseInt(specimen.getSpecimenId());
+//        Integer specimenId = Integer.parseInt(specimen.getSpecimenId());
+        Integer specimenId = specimen.getSpecimenId();
         specimens.put(specimenId,specimen);
         return specimen;
     }

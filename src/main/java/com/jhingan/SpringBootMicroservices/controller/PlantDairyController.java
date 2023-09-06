@@ -1,5 +1,6 @@
 package com.jhingan.SpringBootMicroservices.controller;
 
+import com.jhingan.SpringBootMicroservices.dto.LabelValue;
 import com.jhingan.SpringBootMicroservices.dto.Plant;
 import com.jhingan.SpringBootMicroservices.dto.Specimen;
 import com.jhingan.SpringBootMicroservices.service.ISpecimenService;
@@ -13,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -43,7 +45,7 @@ public class PlantDairyController {
         specimen.setDescription("Fuji Apple");
         specimen.setLatitude("39.74");
         specimen.setLongitude("-84.71");
-        specimen.setSpecimenId("1004");
+        specimen.setSpecimenId(1004);
         specimen.setPlantId(88);
         model.addAttribute("specimen",specimen);
         return "start";
@@ -183,5 +185,25 @@ public class PlantDairyController {
             e.printStackTrace();
             return "error";
         }
+    }
+
+    @GetMapping("/plantAutoComplete")
+    @ResponseBody
+    public List<LabelValue> plantAutoComplete(@RequestParam(value = "term", required = false, defaultValue = "None") String term)
+    {
+        List<LabelValue> plants = new ArrayList<LabelValue>();
+        try {
+            List<Plant> allPlants = specimenService.fetchPlants(term);
+            for (Plant plant: allPlants) {
+                LabelValue labelValue = new LabelValue();
+                labelValue.setLabel(plant.toString());
+                labelValue.setValue(plant.getId());
+                plants.add(labelValue);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ArrayList<LabelValue>();
+        }
+        return plants;
     }
 }
